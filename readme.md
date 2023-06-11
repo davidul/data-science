@@ -17,6 +17,8 @@
     - CNN
 
 ## Linear algebra
+[Jupyter Notebook](02-linear-algebra/linear-algebra.ipynb)
+
 - Vectors
 - Matrices
 
