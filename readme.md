@@ -17,10 +17,10 @@
     - CNN
 
 ## Linear algebra
-[Jupyter Notebook](02-linear-algebra/linear-algebra.ipynb)
+[Jupyter Notebook](02-linear-algebra)
 
-- Vectors
-- Matrices
+- [Vectors](#02-linear-algebra/vectors.ipynb)
+- [Matrices](#02-linear-algebra/matrices.ipynb)
 
 ### Vectors
 - Add/Substract
