@@ -19,8 +19,8 @@
 ## Linear algebra
 [Jupyter Notebook](02-linear-algebra)
 
-- [Vectors](02-linear-algebra/vectors.ipynb)
-- [Matrices](02-linear-algebra/matrices.ipynb)
+- [Vectors](02-linear-algebra/01-vectors.ipynb)
+- [Matrices](02-linear-algebra/02-matrices.ipynb)
 
 ### Vectors
 - Add/Substract
