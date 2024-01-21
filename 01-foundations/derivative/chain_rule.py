@@ -16,6 +16,7 @@ def deriv(func: Callable[[np.ndarray], np.ndarray],
     '''
     Evaluates the derivative of a function "func" at every element in the
     "input_" array.
+    See https://en.wikipedia.org/wiki/Numerical_differentiation
     '''
     return (func(input_ + delta) - func(input_ - delta)) / (2 * delta)
 
@@ -27,7 +28,27 @@ def chain_length_2(chain: Chain,
     f2 = chain[1]
     return f2(f1(x))
 
+def chain_length_3(chain: Chain,
+                     x: np.ndarray) -> np.ndarray:
+    assert len(chain) == 3, \
+        "Length of input 'chain' should be 3"
+    f1 = chain[0]
+    f2 = chain[1]
+    f3 = chain[2]
+    return f3(f2(f1(x)))
+
 def chain_derivative(chain: Chain, input_range: np.ndarray) -> np.ndarray:
+    '''
+    Uses the chain rule to compute the derivative of two nested functions:
+    (f2(f1(x)))' = f2'(f1(x)) * f1'(x)
+
+    chain[0] = f1
+    chain[1] = f2
+
+    Args:
+        chain (Chain): List of two functions (with one input and one output)
+        input_range (np.ndarray): ndarray of numbers (input data)
+    '''
     assert len(chain) == 2, \
         "This function requires 'Chain' objects of length 2"
 
@@ -164,3 +185,50 @@ def loss_gradients(forward_info: Dict[str, np.ndarray], weights: Dict[str, np.nd
     loss_gradients['B'] = dLdB
 
     return loss_gradients
+
+
+def leaky_relu(X: np.ndarray) -> np.ndarray:
+    '''
+    Computes Leaky ReLU activation function
+    '''
+    return np.maximum(0.2 * X, X)
+
+def multiple_inputs_add(x: np.ndarray, y: np.ndarray, sigma: Array_Function) -> float:
+    '''
+    Function with multiple inputs and addition
+    '''
+    assert x.shape == y.shape
+
+    a = x + y
+    return sigma(a)
+
+def multiple_inputs_add_backward(x: np.ndarray, y: np.ndarray, sigma: Array_Function) -> Tuple[np.ndarray, np.ndarray, np.ndarray]:
+    '''
+    Computes the derivative of this function with respect to its inputs.
+    '''
+    # Compute the forward pass
+    a = x + y
+    # Compute the derivative with respect to a
+    dsda = deriv(sigma, a)
+    # Compute the derivative with respect to x, y, and a
+    dadx = 1.0 * dsda
+    dady = 1.0 * dsda
+    return dsda, dadx, dady
+
+def matmul_forward(X: np.ndarray,
+                   W: np.ndarray) -> np.ndarray:
+    '''
+    Computes the forward pass of a matrix multiplication.
+    '''
+
+    assert X.shape[1] == W.shape[0], \
+    '''
+    For matrix multiplication, the number of columns in the first array should
+    match the number of rows in the second; instead the number of columns in the
+    first array is {0} and the number of rows in the second array is {1}.
+    '''.format(X.shape[1], W.shape[0])
+
+    # matrix multiplication
+    N = np.dot(X, W)
+
+    return N
